@@ -3,8 +3,6 @@ title: Visitor
 
 ---
 
-Lorem ipsum dolor sit amet...
+Propósito
 
-<!-- truncate -->
-
-...consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet
+Visitor es un patrón de diseño de comportamiento que te permite separar algoritmos de los objetos sobre los que operan.
