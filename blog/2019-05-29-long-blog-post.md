@@ -1,8 +1,5 @@
 ---
-slug: long-blog-post
-title: Long Blog Post
-authors: yangshun
-tags: [hello, docusaurus]
+title: Template Method
 ---
 
 This is the summary of a very long blog post,
