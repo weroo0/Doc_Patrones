@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: '?Que son los patrones?',
+    title: 'Que son los patrones?',
     Svg: require('@site/static/img/question1-svgrepo-com.svg').default,
     description: (
       <>
@@ -39,7 +39,7 @@ function Feature({Svg, title, description}) {
         <Svg className={styles.featureSvg} role="img" />
       </div>
       <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
+        <Heading as="h2">{title}</Heading>
         <p>{description}</p>
       </div>
     </div>
