@@ -78,8 +78,8 @@ const config = {
       navbar: {
         title: 'Patrones de diseno',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: '',
+          src: 'img/laptoplogo.svg',
         },
         items: [
           {
@@ -90,8 +90,8 @@ const config = {
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
+            href: 'https://github.com/weroo0/Doc_Patrones',
+            label: 'Project on Github',
             position: 'right',
           },
         ],
