@@ -10,8 +10,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'Patrones de diseno de comportamientos',
+  tagline: 'Haz clic aqui para conocer los diferentes tipos',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -63,7 +63,7 @@ const config = {
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
         },
-        theme: {
+        theme:  {
           customCss: './src/css/custom.css',
         },
       }),
@@ -76,22 +76,22 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'My Site',
+        title: 'Patrones de diseno',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: '',
+          src: 'img/laptoplogo.svg',
         },
         items: [
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial',
+            label: 'Explorar los patrones',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
+            href: 'https://github.com/weroo0/Doc_Patrones',
+            label: 'Project on Github',
             position: 'right',
           },
         ],

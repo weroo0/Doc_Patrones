@@ -4,32 +4,29 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Que son los patrones?',
+    Svg: require('@site/static/img/question1-svgrepo-com.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Los patrones de diseño de comportamiento son soluciones estándar a problemas recurrentes relacionados con la comunicación, la asignación de responsabilidades y el comportamiento de los objetos en un sistema. Se enfocan en cómo los objetos interactúan entre sí y cómo pueden colaborar para realizar tareas específicas de manera eficiente. Estos patrones proporcionan un marco que facilita la creación de software flexible y extensible.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Cuales son sus usos?',
+    Svg: require('@site/static/img/help-browser-svgrepo-com.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Se utilizan para simplificar el diseño de sistemas complejos, optimizar la interacción entre objetos y mejorar la reutilización del código. Ayudan a resolver problemas como el manejo de dependencias entre objetos, la coordinación de tareas entre varios componentes, y la gestión de eventos o cambios de estado, sin necesidad de reescribir soluciones cada vez que surge un problema similar.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Como influyen?',
+    Svg: require('@site/static/img/correct-checklist-list-document-extension-format-folder-svgrepo-com.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Influyen al ofrecer soluciones bien definidas y probadas, lo que permite que los desarrolladores eviten reinventar la rueda. Esto reduce la complejidad del código, mejora su mantenimiento y aumenta la flexibilidad del sistema, permitiendo que los componentes se comuniquen de manera más eficiente y que el software se adapte más fácilmente a futuros cambios.
       </>
     ),
   },
@@ -42,7 +39,7 @@ function Feature({Svg, title, description}) {
         <Svg className={styles.featureSvg} role="img" />
       </div>
       <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
+        <Heading as="h2">{title}</Heading>
         <p>{description}</p>
       </div>
     </div>
