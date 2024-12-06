@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Patrones de diseno de comportamientos',
+  title: 'Patrones de diseño de comportamientos',
   tagline: 'Haz clic aqui para conocer los diferentes tipos',
   favicon: 'img/favicon.ico',
 
@@ -76,10 +76,10 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'Patrones de diseno',
+        title: 'Patrones de diseño',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: '',
+          src: 'img/icono.ico',
         },
         items: [
           {
@@ -88,10 +88,10 @@ const config = {
             position: 'left',
             label: 'Explorar los patrones',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+         
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
+            href: 'https://github.com/weroo0/Doc_Patrones',
+            label: 'Project on Github',
             position: 'right',
           },
         ],
@@ -129,17 +129,13 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
                 label: 'GitHub',
                 href: 'https://github.com/facebook/docusaurus',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Patrones de Diseño de Comportamiento. Hecho con Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,
