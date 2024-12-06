@@ -3,9 +3,16 @@
   align-items: center;
   padding: 2rem 0;
   width: 100%;
+  font-size: larger;
+  font-weight: 300;
+  
+  
 }
 
 .featureSvg {
-  height: 200px;
-  width: 200px;
+  height: 250px;
+  width: 250px;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  
 }

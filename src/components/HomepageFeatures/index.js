@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 const FeatureList = [
   {
     title: '¿Qué son los patrones?',
-    Svg: require('@site/static/img/question1-svgrepo-com.svg').default,
+    Svg: require('@site/static/img/question.svg').default,
     description: (
       <>
         Los patrones de diseño de comportamiento son soluciones estándar a problemas recurrentes relacionados con la comunicación, la asignación de responsabilidades y el comportamiento de los objetos en un sistema. Se enfocan en cómo los objetos interactúan entre sí y cómo pueden colaborar para realizar tareas específicas de manera eficiente. Estos patrones proporcionan un marco que facilita la creación de software flexible y extensible.
@@ -14,7 +14,7 @@ const FeatureList = [
   },
   {
     title: '¿Cuáles son sus usos?',
-    Svg: require('@site/static/img/help-browser-svgrepo-com.svg').default,
+    Svg: require('@site/static/img/tool.svg').default,
     description: (
       <>
         Se utilizan para simplificar el diseño de sistemas complejos, optimizar la interacción entre objetos y mejorar la reutilización del código. Ayudan a resolver problemas como el manejo de dependencias entre objetos, la coordinación de tareas entre varios componentes, y la gestión de eventos o cambios de estado, sin necesidad de reescribir soluciones cada vez que surge un problema similar.
@@ -38,7 +38,7 @@ function Feature({Svg, title, description}) {
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>
-      <div className="text--center padding-horiz--md">
+      <div className="text--center padding-horiz--md ">
         <Heading as="h2">{title}</Heading>
         <p>{description}</p>
       </div>

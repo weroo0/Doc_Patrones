@@ -9,6 +9,7 @@
     position: relative;
     overflow: hidden;
     
+    
   }
 
   @media screen and (max-width: 996px) {
@@ -21,12 +22,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  
   }
 
   .container2 {
-    background-color: rgb(187, 215, 223);
-    padding: 4rem 0;
+    background-image: url(https://img.freepik.com/vector-gratis/protector-pantalla-particulas-tecnologia-realista-abstracta_52683-33640.jpg?t=st=1733464154~exp=1733467754~hmac=46df4c7f1ffc425247d3a29b77b25d1ec189687dc2294a5ce1260bcc2f4a22f1&w=1380);
+    background-size: cover;
+    backdrop-filter: blur(10px);
+    padding: 14rem 0;
     text-align: center;
     position: relative;
     overflow: hidden;
+    color: rgb(224, 217, 217);
+    font-weight: 300;
   }
