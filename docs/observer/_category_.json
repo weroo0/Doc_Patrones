@@ -1,6 +1,6 @@
 {
-    "label": "Visitor",
-    "position": 6,
+    "label": "Observer",
+    "position": 1,
     "link": {
       "type": "generated-index"
     }

@@ -135,7 +135,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Patrones de Diseño de Comportamiento. Hecho con Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,
