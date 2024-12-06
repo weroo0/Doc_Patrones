@@ -88,7 +88,7 @@ const config = {
             position: 'left',
             label: 'Explorar los patrones',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+         
           {
             href: 'https://github.com/weroo0/Doc_Patrones',
             label: 'Project on Github',
@@ -128,10 +128,6 @@ const config = {
           {
             title: 'More',
             items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
               {
                 label: 'GitHub',
                 href: 'https://github.com/facebook/docusaurus',
