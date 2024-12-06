@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Patrones de diseno de comportamientos',
+  title: 'Patrones de diseño de comportamientos',
   tagline: 'Haz clic aqui para conocer los diferentes tipos',
   favicon: 'img/favicon.ico',
 
@@ -76,10 +76,10 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'Patrones de diseno',
+        title: 'Patrones de diseño',
         logo: {
           alt: '',
-          src: 'img/laptoplogo.svg',
+          src: 'img/icono.ico',
         },
         items: [
           {

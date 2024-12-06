@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Que son los patrones?',
+    title: '¿Qué son los patrones?',
     Svg: require('@site/static/img/question1-svgrepo-com.svg').default,
     description: (
       <>
@@ -13,7 +13,7 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Cuales son sus usos?',
+    title: '¿Cuáles son sus usos?',
     Svg: require('@site/static/img/help-browser-svgrepo-com.svg').default,
     description: (
       <>
@@ -22,7 +22,7 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Como influyen?',
+    title: '¿Cómo influyen?',
     Svg: require('@site/static/img/correct-checklist-list-document-extension-format-folder-svgrepo-com.svg').default,
     description: (
       <>
