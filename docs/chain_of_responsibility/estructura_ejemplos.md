@@ -1,6 +1,6 @@
 # Estructura y ejemplos
 
-## Estructura
+## Estructura del patrón Chain Of Responsability
 
 ![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/chain-of-responsibility/structure-indexed.png)
 

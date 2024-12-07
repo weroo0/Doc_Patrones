@@ -1,35 +1,31 @@
 # Estructura y ejemplos
 
-## Estructura
+## Estructura del patrón Iterator
 
-![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/chain-of-responsibility/structure-indexed.png)
+![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/iterator/structure-indexed.png)
 
-1. La clase **Manejadora** declara la interfaz común a todos los manejadores concretos. Normalmente contiene un único método para manejar solicitudes, pero en ocasiones también puede contar con otro método para establecer el siguiente manejador de la cadena.
+1. La interfaz **Iteradora** declara las operaciones necesarias para recorrer una colección: extraer el siguiente elemento, recuperar la posición actual, reiniciar la iteración, etc.
 
-2. La clase **Manejadora Base** es opcional y es donde puedes colocar el código boilerplate (segmentos de código que suelen no alterarse) común para todas las clases manejadoras.
+2. Los **Iteradores Concretos** implementan algoritmos específicos para recorrer una colección. El objeto iterador debe controlar el progreso del recorrido por su cuenta. Esto permite a varios iteradores recorrer la misma colección con independencia entre sí.
 
-    Normalmente, esta clase define un campo para almacenar una referencia al siguiente manejador. Los clientes pueden crear una cadena pasando un manejador al constructor o modificador (setter) del manejador previo. La clase también puede implementar el comportamiento de gestión por defecto: puede pasar la ejecución al siguiente manejador después de comprobar su existencia.
+3. La interfaz **Colección** declara uno o varios métodos para obtener iteradores compatibles con la colección. Observa que el tipo de retorno de los métodos debe declararse como la interfaz iteradora de forma que las colecciones concretas puedan devolver varios tipos de iteradores.
 
-3. Los **Manejadores Concretos** contienen el código para procesar las solicitudes. Al recibir una solicitud, cada manejador debe decidir si procesarla y, además, si la pasa a lo largo de la cadena.
+4. Las **Colecciones Concretas** devuelven nuevas instancias de una clase iteradora concreta particular cada vez que el cliente solicita una. Puede que te estés preguntando: ¿dónde está el resto del código de la colección? No te preocupes, debe estar en la misma clase. Lo que pasa es que estos detalles no son fundamentales para el patrón en sí, por eso los omitimos.
 
-    Habitualmente los manejadores son autónomos e inmutables, y aceptan toda la información necesaria únicamente a través del constructor.
+5. El **Cliente** debe funcionar con colecciones e iteradores a través de sus interfaces. De este modo, el cliente no se acopla a clases concretas, permitiéndote utilizar varias colecciones e iteradores con el mismo código cliente.
 
-4. El **Cliente** puede componer cadenas una sola vez o componerlas dinámicamente, dependiendo de la lógica de la aplicación. Observa que se puede enviar una solicitud a cualquier manejador de la cadena; no tiene por qué ser al primero.
+Normalmente, los clientes no crean iteradores por su cuenta, en lugar de eso, los obtienen de las colecciones. Sin embargo, en algunos casos, el cliente puede crear uno directamente, como cuando define su propio iterador especial.
 
 ## Estructura en un ejemplo
-![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/chain-of-responsibility/example-es.png)
+![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/iterator/example.png)
 
-La GUI de la aplicación se estructura normalmente como un árbol de objetos. Por ejemplo, la clase _Diálogo_, que representa la ventana principal de la aplicación, es la raíz del árbol de objetos. La clase diálogo contiene Paneles, que pueden contener otros _paneles_ o simples elementos de bajo nivel, como _Botones_ y _CamposdeTexto_.
+El iterador ‘amigos’ puede utilizarse para recorrer los amigos de un perfil dado. El iterador ‘colegas’ hace lo mismo, excepto que omite amigos que no trabajen en la misma empresa que la persona objetivo. Ambos iteradores implementan una interfaz común que permite a los clientes extraer perfiles sin profundizar en los detalles de la implementación, como la autenticación y el envío de solicitudes REST.
 
-Un simple componente puede mostrar breves pistas contextuales, siempre y cuando el componente tenga asignado cierto texto de ayuda. Pero los componentes más complejos definen su propia forma de mostrar ayuda contextual, por ejemplo, mostrando un extracto del manual o abriendo una página en un navegador.
+El código cliente no está acoplado a clases concretas porque sólo trabaja con colecciones e iteradores a través de interfaces. Si decides conectar tu aplicación a una nueva red social, sólo necesitas proporcionar nuevas clases de colección e iteradoras, sin cambiar el código existente.
 
-![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/chain-of-responsibility/example2-es.png)
+## Iterator en Python
 
-Cuando un usuario apunta el cursor del ratón a un elemento y pulsa la tecla F1, la aplicación detecta el componente bajo el puntero y le envía una solicitud de ayuda. La solicitud emerge por todos los contenedores del elemento hasta que llega al elemento capaz de mostrar la información de ayuda.
-
-## Chain Of Responsability en Python
-
-Este ejemplo ilustra la estructura del patrón de diseño **Chain of Responsibility**. Se centra en responder las siguientes preguntas:
+Este ejemplo ilustra la estructura del patrón de diseño **Iterator**. Se centra en responder las siguientes preguntas:
 
 - ¿De qué clases se compone?
 - ¿Qué papeles juegan esas clases?
@@ -39,129 +35,110 @@ Este ejemplo ilustra la estructura del patrón de diseño **Chain of Responsibil
 
 ```
 from __future__ import annotations
-from abc import ABC, abstractmethod
-from typing import Any, Optional
-
-
-class Handler(ABC):
-    """
-    The Handler interface declares a method for building the chain of handlers.
-    It also declares a method for executing a request.
-    """
-
-    @abstractmethod
-    def set_next(self, handler: Handler) -> Handler:
-        pass
-
-    @abstractmethod
-    def handle(self, request) -> Optional[str]:
-        pass
-
-
-class AbstractHandler(Handler):
-    """
-    The default chaining behavior can be implemented inside a base handler
-    class.
-    """
-
-    _next_handler: Handler = None
-
-    def set_next(self, handler: Handler) -> Handler:
-        self._next_handler = handler
-        # Returning a handler from here will let us link handlers in a
-        # convenient way like this:
-        # monkey.set_next(squirrel).set_next(dog)
-        return handler
-
-    @abstractmethod
-    def handle(self, request: Any) -> str:
-        if self._next_handler:
-            return self._next_handler.handle(request)
-
-        return None
+from collections.abc import Iterable, Iterator
+from typing import Any
 
 
 """
-All Concrete Handlers either handle a request or pass it to the next handler in
-the chain.
+To create an iterator in Python, there are two abstract classes from the built-
+in `collections` module - Iterable,Iterator. We need to implement the
+`__iter__()` method in the iterated object (collection), and the `__next__ ()`
+method in theiterator.
 """
 
 
-class MonkeyHandler(AbstractHandler):
-    def handle(self, request: Any) -> str:
-        if request == "Banana":
-            return f"Monkey: I'll eat the {request}"
-        else:
-            return super().handle(request)
-
-
-class SquirrelHandler(AbstractHandler):
-    def handle(self, request: Any) -> str:
-        if request == "Nut":
-            return f"Squirrel: I'll eat the {request}"
-        else:
-            return super().handle(request)
-
-
-class DogHandler(AbstractHandler):
-    def handle(self, request: Any) -> str:
-        if request == "MeatBall":
-            return f"Dog: I'll eat the {request}"
-        else:
-            return super().handle(request)
-
-
-def client_code(handler: Handler) -> None:
+class AlphabeticalOrderIterator(Iterator):
     """
-    The client code is usually suited to work with a single handler. In most
-    cases, it is not even aware that the handler is part of a chain.
+    Concrete Iterators implement various traversal algorithms. These classes
+    store the current traversal position at all times.
     """
 
-    for food in ["Nut", "Banana", "Cup of coffee"]:
-        print(f"\nClient: Who wants a {food}?")
-        result = handler.handle(food)
-        if result:
-            print(f"  {result}", end="")
-        else:
-            print(f"  {food} was left untouched.", end="")
+    """
+    `_position` attribute stores the current traversal position. An iterator may
+    have a lot of other fields for storing iteration state, especially when it
+    is supposed to work with a particular kind of collection.
+    """
+    _position: int = None
+
+    """
+    This attribute indicates the traversal direction.
+    """
+    _reverse: bool = False
+
+    def __init__(self, collection: WordsCollection, reverse: bool = False) -> None:
+        self._collection = collection
+        self._reverse = reverse
+        self._position = -1 if reverse else 0
+
+    def __next__(self) -> Any:
+        """
+        The __next__() method must return the next item in the sequence. On
+        reaching the end, and in subsequent calls, it must raise StopIteration.
+        """
+        try:
+            value = self._collection[self._position]
+            self._position += -1 if self._reverse else 1
+        except IndexError:
+            raise StopIteration()
+
+        return value
+
+
+class WordsCollection(Iterable):
+    """
+    Concrete Collections provide one or several methods for retrieving fresh
+    iterator instances, compatible with the collection class.
+    """
+
+    def __init__(self, collection: list[Any] | None = None) -> None:
+        self._collection = collection or []
+
+
+    def __getitem__(self, index: int) -> Any:
+        return self._collection[index]
+
+    def __iter__(self) -> AlphabeticalOrderIterator:
+        """
+        The __iter__() method returns the iterator object itself, by default we
+        return the iterator in ascending order.
+        """
+        return AlphabeticalOrderIterator(self)
+
+    def get_reverse_iterator(self) -> AlphabeticalOrderIterator:
+        return AlphabeticalOrderIterator(self, True)
+
+    def add_item(self, item: Any) -> None:
+        self._collection.append(item)
 
 
 if __name__ == "__main__":
-    monkey = MonkeyHandler()
-    squirrel = SquirrelHandler()
-    dog = DogHandler()
+    # The client code may or may not know about the Concrete Iterator or
+    # Collection classes, depending on the level of indirection you want to keep
+    # in your program.
+    collection = WordsCollection()
+    collection.add_item("First")
+    collection.add_item("Second")
+    collection.add_item("Third")
 
-    monkey.set_next(squirrel).set_next(dog)
+    print("Straight traversal:")
+    print("\n".join(collection))
+    print("")
 
-    # The client should be able to send a request to any handler, not just the
-    # first one in the chain.
-    print("Chain: Monkey > Squirrel > Dog")
-    client_code(monkey)
-    print("\n")
-
-    print("Subchain: Squirrel > Dog")
-    client_code(squirrel)
+    print("Reverse traversal:")
+    print("\n".join(collection.get_reverse_iterator()), end="")
 ```
 ### Output.txt: Resultado de la ejecución
 
 ```
-Chain: Monkey > Squirrel > Dog
+Straight traversal:
+First
+Second
+Third
 
-Client: Who wants a Nut?
-  Squirrel: I'll eat the Nut
-Client: Who wants a Banana?
-  Monkey: I'll eat the Banana
-Client: Who wants a Cup of coffee?
-  Cup of coffee was left untouched.
-
-Subchain: Squirrel > Dog
-
-Client: Who wants a Nut?
-  Squirrel: I'll eat the Nut
-Client: Who wants a Banana?
-  Banana was left untouched.
-Client: Who wants a Cup of coffee?
-  Cup of coffee was left untouched.
+Reverse traversal:
+Third
+Second
+First
 ```
 
 
