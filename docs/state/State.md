@@ -1,5 +1,7 @@
-Welcome file
-Welcome file
+---
+sidebar_position: 1
+---
+
 # State
 
 También llamado:  Estado
@@ -24,28 +26,11 @@ También puedes aplicar esta solución a los objetos. Imagina que tienes una cla
 -   En  `Borrador`, mueve el documento a moderación.
 -   En  `Moderación`, hace público el documento, pero sólo si el usuario actual es un administrador.
 -   En  `Publicado`, no hace nada en absoluto.
-[Posibles estados de un objeto de documento]
+
 
 Posibles estados y transiciones de un objeto de documento.
 
-Las máquinas de estado se implementan normalmente con muchos operadores condicionales (`if`  o  `switch`) que seleccionan el comportamiento adecuado dependiendo del estado actual del objeto. Normalmente, este “estado” es tan solo un grupo de valores de los campos del objeto. Aunque nunca hayas oído hablar de máquinas de estados finitos, probablemente hayas implementado un estado al menos alguna vez. ¿Te suena esta estructura de código?
-
-class Document is
-    field state: string
-    // ...
-    method publish() is
-        switch (state)
-            "draft":
-                state = "moderation"
-                break
-            "moderation":
-                if (currentUser.role == "admin")
-                    state = "published"
-                break
-            "published":
-                // No hacer nada.
-                break
-    // ...
+Las máquinas de estado se implementan normalmente con muchos operadores condicionales (`if`  o  `switch`) que seleccionan el comportamiento adecuado dependiendo del estado actual del objeto. Normalmente, este “estado” es tan solo un grupo de valores de los campos del objeto.
 
 La mayor debilidad de una máquina de estado basada en condicionales se revela una vez que empezamos a añadir más y más estados y comportamientos dependientes de estados a la clase  `Documento`. La mayoría de los métodos contendrán condicionales monstruosos que eligen el comportamiento adecuado de un método de acuerdo con el estado actual. Un código así es muy difícil de mantener, porque cualquier cambio en la lógica de transición puede requerir cambiar los condicionales de estado de cada método.
 
@@ -61,7 +46,6 @@ Documento delega el trabajo a un objeto de estado.
 
 Para la transición del contexto a otro estado, sustituye el objeto de estado activo por otro objeto que represente ese nuevo estado. Esto sólo es posible si todas las clases de estado siguen la misma interfaz y el propio contexto funciona con esos objetos a través de esa interfaz.
 
-Esta estructura puede resultar similar al patrón  [Strategy](https://refactoring.guru/es/design-patterns/strategy), pero hay una diferencia clave. En el patrón State, los estados particulares pueden conocerse entre sí e iniciar transiciones de un estado a otro, mientras que las estrategias casi nunca se conocen.
 
 ## Analogía en el mundo real
 
@@ -127,9 +111,3 @@ Para la transición del contexto a otro estado, sustituye el objeto de estado ac
 
 Esta estructura puede resultar similar al patrón Strategy, pero hay una diferencia clave. En el patrón State, los estados particulares pueden conocerse entre sí e iniciar transiciones de un estado a otro, mientras que las estrategias casi nunca se conocen.
 
-Analogía en el mundo real
-Los botones e interruptores de tu smartphone se comportan de forma diferente dependiendo del estado actual del dispositivo:
-
-Cuando el teléfono está desbloqueado, al pulsar botones se ejecutan varias funciones.
-Cuando el teléfono está bloqueado, pulsar un botón desbloquea la pantalla.
-Cuando la batería del teléfono está baja, pulsar un botón muestra la pantalla de carga.

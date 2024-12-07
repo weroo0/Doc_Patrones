@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Ventajas y Desventajas
 
 
@@ -14,7 +18,7 @@
 5.  **Flexibilidad en la ejecución** : Los comandos pueden ser invocados en diferentes momentos o contextos, lo que ofrece gran flexibilidad en su ejecución.
     
 
-### Comando Desventajas del Patrón:
+### Desventajas del Patrón:
 
 1.  **Mayor complejidad** : Introduce más clases (Comando, Receptor, Invocador), lo que puede aumentar la complejidad del sistema, especialmente en proyectos pequeños.
     
