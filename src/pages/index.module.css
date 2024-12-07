@@ -9,6 +9,7 @@
     position: relative;
     overflow: hidden;
     
+    
   }
 
   @media screen and (max-width: 996px) {
@@ -21,12 +22,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  
   }
 
   .container2 {
-    background-color: rgb(187, 215, 223);
-    padding: 4rem 0;
+    background-image: url("/static/img/background\ img.jpg") ;
+    background-size: cover;
+    backdrop-filter: blur(10px);
+    padding: 10rem 0;
     text-align: center;
     position: relative;
     overflow: hidden;
+    color: rgb(224, 217, 217);
+    font-weight: 300;
   }
