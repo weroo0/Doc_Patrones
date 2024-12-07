@@ -12,7 +12,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'Patrones de diseño de comportamientos',
   tagline: 'Haz clic aqui para conocer los diferentes tipos',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo.png',
 
   // Set the production url of your site here
   url: 'https://your-docusaurus-site.example.com',
@@ -100,42 +100,24 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Integrantes',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'Arturo Zenteno',
+                href: 'https://github.com/ZeVa16',
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                label: 'Luis Enrique ',
+                href: 'https://github.com/weroo0',
               },
               {
-                label: 'X',
-                href: 'https://x.com/docusaurus',
-              },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                label: 'Dayron del Rosal',
+                href: 'https://github.com/dayronZ',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Patrones de Diseño de Comportamiento. Hecho con Docusaurus.`,
+        copyright: `Proyecto con fines educativos - Universidad Tecnológica de la Sierra Hidalguense`,
       },
       prism: {
         theme: prismThemes.github,
