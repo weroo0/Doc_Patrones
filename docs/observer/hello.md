@@ -1,4 +1,4 @@
-# Descripcion
+# Descripción
 
 El patrón Observer es un patrón de diseño de software que define una relación de uno a muchos entre objetos, de modo que cuando un objeto cambia de estado, todos sus dependientes son notificados y actualizados automáticamente. Es como suscribirse a un boletín: cuando hay una nueva publicación, todos los suscriptores son notificados.   
 
@@ -9,14 +9,16 @@ El patrón Observer es un patrón de diseño de software que define una relació
 
 Imagina un sistema donde un objeto (el sujeto) necesita notificar a otros objetos (los observadores) cuando su estado cambia. Por ejemplo, en una hoja de cálculo, si cambias el valor de una celda, todas las fórmulas que dependen de esa celda deben recalcularse y mostrar el nuevo resultado. ¿Cómo podemos lograr que estos objetos dependientes se actualicen automáticamente sin tener que programar cada dependencia individualmente?
 
-## Solucion
+## Solución
+
+El patrón de diseño Observer es la respuesta ideal para este tipo de problema. Este patrón define una dependencia de uno a muchos entre objetos, de manera que cuando un objeto cambia de estado, todos sus dependientes son notificados y actualizados automáticamente. 
 
 ## ¿Por qué usar el patrón Observer?
 - Desacople: Separa las preocupaciones, permitiendo que los objetos cambien de estado sin conocer los detalles de los objetos que dependen de ellos.
 - Flexibilidad: Facilita agregar o eliminar observadores sin afectar el objeto observado.
 - Reutilización: Promueve la reutilización de código al encapsular la lógica de notificación.
 - Eventos: Permite implementar mecanismos de eventos de manera eficiente.
-## Componentes Clave:
+## Componentes Clave
 - Sujeto (Subject): El objeto que es observado. Mantiene una lista de observadores y notifica a todos cuando su estado cambia.
 - Observador (Observer): El objeto que depende del sujeto. Se registra con el sujeto y es notificado cuando ocurre un cambio.
 

@@ -16,11 +16,6 @@ Puede pasar información adicional al método actualizar para proporcionar conte
 Implementa la interfaz Suscriptor, que define el método actualizar.
 Este método se invoca cuando el notificador envía una actualización.
 El suscriptor utiliza la información proporcionada para realizar las acciones necesarias.
-### Beneficios:
-
-- Desacople: El notificador no necesita conocer los detalles de los suscriptores.
-- Flexibilidad: Se pueden agregar o eliminar suscriptores fácilmente.
-- Reutilización: El patrón se puede aplicar en diversos escenarios.
 
 En resumen, el patrón Observer proporciona una forma flexible y eficiente de comunicar cambios entre objetos en un sistema. Es ideal para situaciones donde un objeto necesita notificar a múltiples objetos sobre eventos importantes.
 
