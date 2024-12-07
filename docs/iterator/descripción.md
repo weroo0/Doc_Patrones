@@ -55,49 +55,37 @@ Todos los iteradores deben implementar la misma interfaz. Esto hace que el códi
 
 ## ¿Por qué usar el patrón Template Method?
 
-- Desacople: Permite que los emisores de una solicitud no tengan que conocer el receptor específico. Esto hace que el código sea más flexible y fácil de modificar.
+- Abstracción: Oculta la implementación interna de la colección, permitiendo que el código cliente se concentre en la lógica de procesamiento de los elementos, sin preocuparse por cómo están almacenados o ordenados.
 
-- Flexibilidad: Se pueden agregar o quitar manejadores de la cadena sin afectar a otros componentes del sistema. Esto facilita la evolución del sistema y la adición de nuevas funcionalidades.
+- Flexibilidad: Permite recorrer colecciones de diferentes tipos de datos de manera uniforme, sin necesidad de escribir código específico para cada tipo de colección.
 
-- Manejo dinámico de solicitudes: Permite que las solicitudes se enruten dinámicamente a diferentes manejadores en función de condiciones específicas. Esto proporciona una gran flexibilidad en el procesamiento de solicitudes.
+- Reutilización de código: El código de recorrido se centraliza en el iterador, lo que facilita su reutilización en diferentes partes de la aplicación.
 
-- Reutilización de código: Los manejadores pueden ser reutilizados en diferentes contextos. Esto reduce la duplicación de código y mejora la mantenibilidad.
+- Soporte para múltiples iteraciones: Permite tener múltiples iteradores recorriendo la misma colección al mismo tiempo, cada uno en una posición diferente.
 
-- Simplificación de la lógica: Al descomponer el procesamiento de una solicitud en una serie de pasos más pequeños, se simplifica la lógica y se hace más fácil de entender y depurar.
+- Simplificación del código: Al encapsular la lógica de recorrido en el iterador, se simplifica el código del cliente y se hace más fácil de entender y mantener.
+ 
+- Soporte para diferentes tipos de recorrido: Puedes crear iteradores que implementen diferentes algoritmos de recorrido, como recorrer en orden inverso, saltar elementos, etc.
 
 ## ¿Cómo implementarlo?
 
-1. Declara la interfaz manejadora y describe la firma de un método para manejar solicitudes.
+1. Declara la interfaz iteradora. Como mínimo, debe tener un método para extraer el siguiente elemento de una colección. Por conveniencia, puedes añadir un par de métodos distintos, como para extraer el elemento previo, localizar la posición actual o comprobar el final de la iteración.
 
-    Decide cómo pasará el cliente la información de la solicitud dentro del método. La forma más flexible consiste en convertir la solicitud en un objeto y pasarlo al método de gestión como argumento.
+2. Declara la interfaz de colección y describe un método para buscar iteradores. El tipo de retorno debe ser igual al de la interfaz iteradora. Puedes declarar métodos similares si planeas tener varios grupos distintos de iteradores.
 
-2. Para eliminar código boilerplate duplicado en manejadores concretos, puede merecer la pena crear una clase manejadora abstracta base, derivada de la interfaz manejadora.
+3. Implementa clases iteradoras concretas para las colecciones que quieras que sean recorridas por iteradores. Un objeto iterador debe estar vinculado a una única instancia de la colección. Normalmente, este vínculo se establece a través del constructor del iterador.
 
-    Esta clase debe tener un campo para almacenar una referencia al siguiente manejador de la cadena. Considera hacer la clase inmutable. No obstante, si planeas modificar las cadenas durante el tiempo de ejecución, deberás definir un modificador (setter) para alterar el valor del campo de referencia.
+4. Implementa la interfaz de colección en tus clases de colección. La idea principal es proporcionar al cliente un atajo para crear iteradores personalizados para una clase de colección particular. El objeto de colección debe pasarse a sí mismo al constructor del iterador para establecer un vínculo entre ellos.
 
-    También puedes implementar el comportamiento por defecto conveniente para el método de control, que consiste en reenviar la solicitud al siguiente objeto, a no ser que no quede ninguno. Los manejadores concretos podrán utilizar este comportamiento invocando al método padre.
-
-3. Una a una, crea subclases manejadoras concretas e implementa los métodos de control. Cada manejador debe tomar dos decisiones cuando recibe una solicitud:
-
-    - Si procesa la solicitud.
-    - Si pasa la solicitud al siguiente eslabón de la cadena.
-
-4. El cliente puede ensamblar cadenas por su cuenta o recibir cadenas prefabricadas de otros objetos. En el último caso, debes implementar algunas clases fábrica para crear cadenas de acuerdo con los ajustes de configuración o de entorno.
-
-5. El cliente puede activar cualquier manejador de la cadena, no solo el primero. La solicitud se pasará a lo largo de la cadena hasta que algún manejador se rehúse a pasarlo o hasta que llegue al final de la cadena.
-
-6. Debido a la naturaleza dinámica de la cadena, el cliente debe estar listo para gestionar los siguientes escenarios:
-
-    - La cadena puede consistir en un único vínculo.
-    - Algunas solicitudes pueden no llegar al final de la cadena.
-    - Otras pueden llegar hasta el final de la cadena sin ser gestionadas.
+5. Repasa el código cliente para sustituir todo el código de recorrido de la colección por el uso de iteradores. El cliente busca un nuevo objeto iterador cada vez que necesita recorrer los elementos de la colección.
 
 ## Ventajas y desventajas
-- ✔️ Puedes controlar el orden de control de solicitudes
+- ✔️ Principio de responsabilidad única. Puedes limpiar el código cliente y las colecciones extrayendo algoritmos de recorrido voluminosos y colocándolos en clases independientes.
 
-- ✔️ Principio de responsabilidad única. Puedes desacoplar las clases que invoquen operaciones de las que   realicen operaciones.
+- ✔️ Principio de abierto/cerrado. Puedes implementar nuevos tipos de colecciones e iteradores y pasarlos al código existente sin descomponer nada.
 
-- ✔️ Principio de abierto/cerrado. Puedes introducir nuevos manejadores en la aplicación sin descomponer el código cliente existente.
+- ✔️ Puedes recorrer la misma colección en paralelo porque cada objeto iterador contiene su propio estado de iteración.
 
-- ❌ Algunas solicitudes pueden acabar sin ser gestionadas.
+- ❌ Aplicar el patrón puede resultar excesivo si tu aplicación funciona únicamente con colecciones sencillas.
 
+- ❌ Utilizar un iterador puede ser menos eficiente que recorrer directamente los elementos de algunas colecciones especializadas.
