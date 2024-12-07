@@ -44,45 +44,49 @@ En nuestro ejemplo de los sistemas de pedidos, un manejador realiza el procesami
 
 ## ¿Por qué usar el patrón Template Method?
 
-- Reutilización de código:
+- Desacople: Permite que los emisores de una solicitud no tengan que conocer el receptor específico. Esto hace que el código sea más flexible y fácil de modificar.
 
-    - Evita la duplicación de código: Al definir el esqueleto del algoritmo en una clase base, puedes reutilizar esa estructura en múltiples subclases, evitando tener que escribir el mismo código una y otra vez.
-    - Promueve la coherencia: Garantiza que todas las subclases sigan la misma estructura, lo que facilita la comprensión y el mantenimiento del código.
+- Flexibilidad: Se pueden agregar o quitar manejadores de la cadena sin afectar a otros componentes del sistema. Esto facilita la evolución del sistema y la adición de nuevas funcionalidades.
 
-- Flexibilidad:
+- Manejo dinámico de solicitudes: Permite que las solicitudes se enruten dinámicamente a diferentes manejadores en función de condiciones específicas. Esto proporciona una gran flexibilidad en el procesamiento de solicitudes.
 
-    - Personalización: Las subclases pueden personalizar los pasos del algoritmo que sean relevantes para su contexto específico, sin afectar a la estructura general.
-    - Extensibilidad: Es fácil agregar nuevas subclases para implementar diferentes variantes del algoritmo.
+- Reutilización de código: Los manejadores pueden ser reutilizados en diferentes contextos. Esto reduce la duplicación de código y mejora la mantenibilidad.
 
-- Inversión de control:
-
-    - Mayor control: La clase base mantiene el control sobre el flujo general del algoritmo, mientras que las subclases proporcionan la implementación de los pasos concretos.
-    - Desacople: Reduce el acoplamiento entre las clases, haciendo que el código sea más fácil de modificar y probar.
-
-- Facilita la comprensión:
-
-    - Estructura clara: La estructura del algoritmo queda definida en la clase base, lo que facilita la comprensión del código por parte de otros desarrolladores.
-    - Mayor mantenibilidad: Al separar las responsabilidades entre la clase base y las subclases, el código se vuelve más fácil de mantener y modificar.
+- Simplificación de la lógica: Al descomponer el procesamiento de una solicitud en una serie de pasos más pequeños, se simplifica la lógica y se hace más fácil de entender y depurar.
 
 ## ¿Cómo implementarlo?
 
-1. Analiza el algoritmo objetivo para ver si puedes dividirlo en pasos. Considera qué pasos son comunes a todas las subclases y cuáles siempre serán únicos.
+1. Declara la interfaz manejadora y describe la firma de un método para manejar solicitudes.
 
-2. Crea la clase base abstracta y declara el método plantilla y un grupo de métodos abstractos que representen los pasos del algoritmo. Perfila la estructura del algoritmo en el método plantilla ejecutando los pasos correspondientes. Considera declarar el método plantilla como _final_ para evitar que las subclases lo sobrescriban.
+    Decide cómo pasará el cliente la información de la solicitud dentro del método. La forma más flexible consiste en convertir la solicitud en un objeto y pasarlo al método de gestión como argumento.
 
-3. No hay problema en que todos los pasos acaben siendo abstractos. Sin embargo, a algunos pasos les vendría bien tener una implementación por defecto. Las subclases no tienen que implementar esos métodos.
+2. Para eliminar código boilerplate duplicado en manejadores concretos, puede merecer la pena crear una clase manejadora abstracta base, derivada de la interfaz manejadora.
 
-4. Piensa en añadir ganchos entre los pasos cruciales del algoritmo.
+    Esta clase debe tener un campo para almacenar una referencia al siguiente manejador de la cadena. Considera hacer la clase inmutable. No obstante, si planeas modificar las cadenas durante el tiempo de ejecución, deberás definir un modificador (setter) para alterar el valor del campo de referencia.
 
-5. Para cada variación del algoritmo, crea una nueva subclase concreta. Ésta debe implementar todos los pasos abstractos, pero también puede sobrescribir algunos de los opcionales.
+    También puedes implementar el comportamiento por defecto conveniente para el método de control, que consiste en reenviar la solicitud al siguiente objeto, a no ser que no quede ninguno. Los manejadores concretos podrán utilizar este comportamiento invocando al método padre.
+
+3. Una a una, crea subclases manejadoras concretas e implementa los métodos de control. Cada manejador debe tomar dos decisiones cuando recibe una solicitud:
+
+    - Si procesa la solicitud.
+    - Si pasa la solicitud al siguiente eslabón de la cadena.
+
+4. El cliente puede ensamblar cadenas por su cuenta o recibir cadenas prefabricadas de otros objetos. En el último caso, debes implementar algunas clases fábrica para crear cadenas de acuerdo con los ajustes de configuración o de entorno.
+
+5. El cliente puede activar cualquier manejador de la cadena, no solo el primero. La solicitud se pasará a lo largo de la cadena hasta que algún manejador se rehúse a pasarlo o hasta que llegue al final de la cadena.
+
+6. Debido a la naturaleza dinámica de la cadena, el cliente debe estar listo para gestionar los siguientes escenarios:
+
+    - La cadena puede consistir en un único vínculo.
+    - Algunas solicitudes pueden no llegar al final de la cadena.
+    - Otras pueden llegar hasta el final de la cadena sin ser gestionadas.
 
 ## Ventajas y desventajas
-- ✔️ Puedes permitir a los clientes que sobrescriban tan solo ciertas partes de un algoritmo grande, para que les afecten menos los cambios que tienen lugar en otras partes del algoritmo.
+- ✔️ Puedes controlar el orden de control de solicitudes
 
-- ✔️ Puedes colocar el código duplicado dentro de una superclase.
+- ✔️ Principio de responsabilidad única. Puedes desacoplar las clases que invoquen operaciones de las que   realicen operaciones.
 
-- ❌ Algunos clientes pueden verse limitados por el esqueleto proporcionado de un algoritmo.
+- ✔️ Principio de abierto/cerrado. Puedes introducir nuevos manejadores en la aplicación sin descomponer el código cliente existente.
 
-- ❌ Puede que violes el _principio de sustitución de Liskov_ suprimiendo una implementación por defecto de un paso a través de una subclase.
+- ❌ Algunas solicitudes pueden acabar sin ser gestionadas.
 
-- ❌ Los métodos plantilla tienden a ser más difíciles de mantener cuantos más pasos tengan.
