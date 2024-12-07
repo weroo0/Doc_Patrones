@@ -2,20 +2,34 @@
 
 ## Estructura
 
-![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/template-method/structure-indexed.png)
+![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/chain-of-responsibility/structure-indexed.png)
 
-1. La **Clase Abstracta** declara métodos que actúan como pasos de un algoritmo, así como el propio método plantilla que invoca estos métodos en un orden específico. Los pasos pueden declararse abstractos o contar con una implementación por defecto.
+1. La clase **Manejadora** declara la interfaz común a todos los manejadores concretos. Normalmente contiene un único método para manejar solicitudes, pero en ocasiones también puede contar con otro método para establecer el siguiente manejador de la cadena.
 
-2. Las **Clases Concretas** pueden sobrescribir todos los pasos, pero no el propio método plantilla.
+2. La clase **Manejadora Base** es opcional y es donde puedes colocar el código boilerplate (segmentos de código que suelen no alterarse) común para todas las clases manejadoras.
+
+    Normalmente, esta clase define un campo para almacenar una referencia al siguiente manejador. Los clientes pueden crear una cadena pasando un manejador al constructor o modificador (setter) del manejador previo. La clase también puede implementar el comportamiento de gestión por defecto: puede pasar la ejecución al siguiente manejador después de comprobar su existencia.
+
+3. Los **Manejadores Concretos** contienen el código para procesar las solicitudes. Al recibir una solicitud, cada manejador debe decidir si procesarla y, además, si la pasa a lo largo de la cadena.
+
+    Habitualmente los manejadores son autónomos e inmutables, y aceptan toda la información necesaria únicamente a través del constructor.
+
+4. El **Cliente** puede componer cadenas una sola vez o componerlas dinámicamente, dependiendo de la lógica de la aplicación. Observa que se puede enviar una solicitud a cualquier manejador de la cadena; no tiene por qué ser al primero.
 
 ## Estructura en un ejemplo
-![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/template-method/example.png)
+![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/chain-of-responsibility/example-es.png)
 
-Todas las razas del juego tienen tipos de unidades y edificios casi iguales. Por lo tanto, puedes reutilizar la misma estructura IA para varias de ellas, a la vez que puedes sobrescribir algunos de los detalles. Con esta solución, puedes sobrescribir la IA de los orcos para que sean más agresivos, hacer que los humanos tengan una actitud más defensiva y hacer que los monstruos no puedan construir nada. Para añadir una nueva raza al juego habría que crear una nueva subclase IA y sobrescribir los métodos por defecto declarados en la clase IA base.
+La GUI de la aplicación se estructura normalmente como un árbol de objetos. Por ejemplo, la clase _Diálogo_, que representa la ventana principal de la aplicación, es la raíz del árbol de objetos. La clase diálogo contiene Paneles, que pueden contener otros _paneles_ o simples elementos de bajo nivel, como _Botones_ y _CamposdeTexto_.
 
-## Template Method en Python
+Un simple componente puede mostrar breves pistas contextuales, siempre y cuando el componente tenga asignado cierto texto de ayuda. Pero los componentes más complejos definen su propia forma de mostrar ayuda contextual, por ejemplo, mostrando un extracto del manual o abriendo una página en un navegador.
 
-Este ejemplo ilustra la estructura del patrón de diseño Template Method. Se centra en responder las siguientes preguntas:
+![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://refactoring.guru/images/patterns/diagrams/chain-of-responsibility/example2-es.png)
+
+Cuando un usuario apunta el cursor del ratón a un elemento y pulsa la tecla F1, la aplicación detecta el componente bajo el puntero y le envía una solicitud de ayuda. La solicitud emerge por todos los contenedores del elemento hasta que llega al elemento capaz de mostrar la información de ayuda.
+
+## Chain Of Responsability en Python
+
+Este ejemplo ilustra la estructura del patrón de diseño **Chain of Responsibility**. Se centra en responder las siguientes preguntas:
 
 - ¿De qué clases se compone?
 - ¿Qué papeles juegan esas clases?
@@ -24,131 +38,130 @@ Este ejemplo ilustra la estructura del patrón de diseño Template Method. Se ce
 ### main.py: Ejemplo conceptual
 
 ```
+from __future__ import annotations
 from abc import ABC, abstractmethod
+from typing import Any, Optional
 
 
-class AbstractClass(ABC):
+class Handler(ABC):
     """
-    The Abstract Class defines a template method that contains a skeleton of
-    some algorithm, composed of calls to (usually) abstract primitive
-    operations.
-
-    Concrete subclasses should implement these operations, but leave the
-    template method itself intact.
+    The Handler interface declares a method for building the chain of handlers.
+    It also declares a method for executing a request.
     """
-
-    def template_method(self) -> None:
-        """
-        The template method defines the skeleton of an algorithm.
-        """
-
-        self.base_operation1()
-        self.required_operations1()
-        self.base_operation2()
-        self.hook1()
-        self.required_operations2()
-        self.base_operation3()
-        self.hook2()
-
-    # These operations already have implementations.
-
-    def base_operation1(self) -> None:
-        print("AbstractClass says: I am doing the bulk of the work")
-
-    def base_operation2(self) -> None:
-        print("AbstractClass says: But I let subclasses override some operations")
-
-    def base_operation3(self) -> None:
-        print("AbstractClass says: But I am doing the bulk of the work anyway")
-
-    # These operations have to be implemented in subclasses.
 
     @abstractmethod
-    def required_operations1(self) -> None:
+    def set_next(self, handler: Handler) -> Handler:
         pass
 
     @abstractmethod
-    def required_operations2(self) -> None:
-        pass
-
-    # These are "hooks." Subclasses may override them, but it's not mandatory
-    # since the hooks already have default (but empty) implementation. Hooks
-    # provide additional extension points in some crucial places of the
-    # algorithm.
-
-    def hook1(self) -> None:
-        pass
-
-    def hook2(self) -> None:
+    def handle(self, request) -> Optional[str]:
         pass
 
 
-class ConcreteClass1(AbstractClass):
+class AbstractHandler(Handler):
     """
-    Concrete classes have to implement all abstract operations of the base
-    class. They can also override some operations with a default implementation.
-    """
-
-    def required_operations1(self) -> None:
-        print("ConcreteClass1 says: Implemented Operation1")
-
-    def required_operations2(self) -> None:
-        print("ConcreteClass1 says: Implemented Operation2")
-
-
-class ConcreteClass2(AbstractClass):
-    """
-    Usually, concrete classes override only a fraction of base class'
-    operations.
+    The default chaining behavior can be implemented inside a base handler
+    class.
     """
 
-    def required_operations1(self) -> None:
-        print("ConcreteClass2 says: Implemented Operation1")
+    _next_handler: Handler = None
 
-    def required_operations2(self) -> None:
-        print("ConcreteClass2 says: Implemented Operation2")
+    def set_next(self, handler: Handler) -> Handler:
+        self._next_handler = handler
+        # Returning a handler from here will let us link handlers in a
+        # convenient way like this:
+        # monkey.set_next(squirrel).set_next(dog)
+        return handler
 
-    def hook1(self) -> None:
-        print("ConcreteClass2 says: Overridden Hook1")
+    @abstractmethod
+    def handle(self, request: Any) -> str:
+        if self._next_handler:
+            return self._next_handler.handle(request)
+
+        return None
 
 
-def client_code(abstract_class: AbstractClass) -> None:
+"""
+All Concrete Handlers either handle a request or pass it to the next handler in
+the chain.
+"""
+
+
+class MonkeyHandler(AbstractHandler):
+    def handle(self, request: Any) -> str:
+        if request == "Banana":
+            return f"Monkey: I'll eat the {request}"
+        else:
+            return super().handle(request)
+
+
+class SquirrelHandler(AbstractHandler):
+    def handle(self, request: Any) -> str:
+        if request == "Nut":
+            return f"Squirrel: I'll eat the {request}"
+        else:
+            return super().handle(request)
+
+
+class DogHandler(AbstractHandler):
+    def handle(self, request: Any) -> str:
+        if request == "MeatBall":
+            return f"Dog: I'll eat the {request}"
+        else:
+            return super().handle(request)
+
+
+def client_code(handler: Handler) -> None:
     """
-    The client code calls the template method to execute the algorithm. Client
-    code does not have to know the concrete class of an object it works with, as
-    long as it works with objects through the interface of their base class.
+    The client code is usually suited to work with a single handler. In most
+    cases, it is not even aware that the handler is part of a chain.
     """
 
-    # ...
-    abstract_class.template_method()
-    # ...
+    for food in ["Nut", "Banana", "Cup of coffee"]:
+        print(f"\nClient: Who wants a {food}?")
+        result = handler.handle(food)
+        if result:
+            print(f"  {result}", end="")
+        else:
+            print(f"  {food} was left untouched.", end="")
 
 
 if __name__ == "__main__":
-    print("Same client code can work with different subclasses:")
-    client_code(ConcreteClass1())
-    print("")
+    monkey = MonkeyHandler()
+    squirrel = SquirrelHandler()
+    dog = DogHandler()
 
-    print("Same client code can work with different subclasses:")
-    client_code(ConcreteClass2())
+    monkey.set_next(squirrel).set_next(dog)
+
+    # The client should be able to send a request to any handler, not just the
+    # first one in the chain.
+    print("Chain: Monkey > Squirrel > Dog")
+    client_code(monkey)
+    print("\n")
+
+    print("Subchain: Squirrel > Dog")
+    client_code(squirrel)
 ```
 ### Output.txt: Resultado de la ejecución
 
 ```
-Same client code can work with different subclasses:
-AbstractClass says: I am doing the bulk of the work
-ConcreteClass1 says: Implemented Operation1
-AbstractClass says: But I let subclasses override some operations
-ConcreteClass1 says: Implemented Operation2
-AbstractClass says: But I am doing the bulk of the work anyway
+Chain: Monkey > Squirrel > Dog
 
-Same client code can work with different subclasses:
-AbstractClass says: I am doing the bulk of the work
-ConcreteClass2 says: Implemented Operation1
-AbstractClass says: But I let subclasses override some operations
-ConcreteClass2 says: Overridden Hook1
-ConcreteClass2 says: Implemented Operation2
-AbstractClass says: But I am doing the bulk of the work anyway
+Client: Who wants a Nut?
+  Squirrel: I'll eat the Nut
+Client: Who wants a Banana?
+  Monkey: I'll eat the Banana
+Client: Who wants a Cup of coffee?
+  Cup of coffee was left untouched.
+
+Subchain: Squirrel > Dog
+
+Client: Who wants a Nut?
+  Squirrel: I'll eat the Nut
+Client: Who wants a Banana?
+  Banana was left untouched.
+Client: Who wants a Cup of coffee?
+  Cup of coffee was left untouched.
 ```
 
 
